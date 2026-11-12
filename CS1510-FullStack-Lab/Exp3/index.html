@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="calcApp">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AngularJS Calculator</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 20px; background: #282c34; font-family: "Segoe UI", sans-serif; }
+    .calculator { width: min(100%, 340px); padding: 22px; border-radius: 20px; color: white; background: #1e2127; box-shadow: 0 14px 35px #0008; }
+    .calculator h1 { margin: 0 0 16px; text-align: center; font-size: 1.25rem; }
+    .display { width: 100%; min-height: 64px; margin-bottom: 16px; padding: 14px; border: 0; border-radius: 10px; color: #00ff99; background: #121417; font-size: 1.8rem; text-align: right; }
+    .button-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    button { min-height: 58px; border: 0; border-radius: 12px; color: white; background: #2a2f3a; font-size: 1.25rem; font-weight: 700; cursor: pointer; }
+    button:hover { color: #14211c; background: #00ff99; }
+    button.operator { background: #008f6b; } button.clear { grid-column: span 4; background: #bd3535; }
+    .status { min-height: 22px; margin: 12px 0 0; color: #ffb4b4; text-align: center; }
+  </style>
+</head>
+<body ng-controller="CalcController">
+  <main class="calculator">
+    <h1>AngularJS Calculator</h1>
+    <input class="display" type="text" ng-model="expression" placeholder="0" readonly aria-label="Calculator display">
+    <div class="button-grid">
+      <button ng-click="append('7')">7</button><button ng-click="append('8')">8</button><button ng-click="append('9')">9</button><button class="operator" ng-click="append('/')">÷</button>
+      <button ng-click="append('4')">4</button><button ng-click="append('5')">5</button><button ng-click="append('6')">6</button><button class="operator" ng-click="append('*')">×</button>
+      <button ng-click="append('1')">1</button><button ng-click="append('2')">2</button><button ng-click="append('3')">3</button><button class="operator" ng-click="append('-')">−</button>
+      <button ng-click="append('0')">0</button><button ng-click="append('.')">.</button><button class="operator" ng-click="append('+')">+</button><button class="operator" ng-click="calculate()">=</button>
+      <button class="clear" ng-click="clear()">C</button>
+    </div>
+    <p class="status" role="status">{{message}}</p>
+  </main>
+  <script>
+    angular.module('calcApp', []).controller('CalcController', ['$scope', function ($scope) {
+      $scope.expression = '';
+      $scope.message = '';
+      $scope.append = function (character) {
+        const operators = '+-*/';
+        const lastCharacter = $scope.expression.slice(-1);
+        if (operators.includes(character) && (!lastCharacter || operators.includes(lastCharacter))) return;
+        if (character === '.') {
+          const lastOperator = Math.max(...['+', '-', '*', '/'].map(op => $scope.expression.lastIndexOf(op)));
+          if ($scope.expression.slice(lastOperator + 1).includes('.')) return;
+          if (!lastCharacter || operators.includes(lastCharacter)) $scope.expression += '0';
+        }
+        $scope.expression += character;
+        $scope.message = '';
+      };
+      $scope.clear = function () { $scope.expression = ''; $scope.message = ''; };
+      $scope.calculate = function () {
+        if (!$scope.expression || /[+*/.-]$/.test($scope.expression)) { $scope.message = 'Enter a complete expression.'; return; }
+        if (!/^[0-9+*/.\-() ]+$/.test($scope.expression)) { $scope.message = 'Invalid expression.'; return; }
+        try {
+          // eval is retained here to demonstrate the syllabus calculator experiment.
+          const result = eval($scope.expression);
+          if (!Number.isFinite(result)) throw new Error('Invalid result');
+          $scope.expression = String(Number(result.toFixed(10)));
+          $scope.message = '';
+        } catch (error) { $scope.message = 'Invalid calculation.'; }
+      };
+    }]);
+  </script>
+</body>
+</html>

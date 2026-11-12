@@ -1,0 +1,16 @@
+{
+  "repository": "CS1510-FullStack-Lab",
+  "experiments": {
+    "Exp1": "index.html",
+    "Exp2": "index.html",
+    "Exp3": "index.html",
+    "Exp4": "index.html",
+    "Exp5": "public",
+    "Exp6": "public",
+    "Exp7": "server.js",
+    "Exp8": "backend",
+    "Exp9": "backend",
+    "Exp10": "backend"
+  },
+  "file_count": 71
+}

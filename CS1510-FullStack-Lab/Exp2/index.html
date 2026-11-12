@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Chat Module</title><link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="chat-container">
+    <header class="chat-header"><h1>Simple Chat</h1><p>Ask a question and get a predefined reply</p></header>
+    <section class="chat-messages" id="chat-messages" aria-live="polite" aria-label="Conversation">
+      <div class="chat-message bot">Hello! Type “hello”, “help me learn html”, or “bye”.</div>
+    </section>
+    <form class="chat-input" id="chat-form">
+      <label class="sr-only" for="user-input">Your message</label>
+      <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off" required>
+      <button type="submit">Send</button>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "cs1510-shopping-cart",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Session-based shopping cart lab using Express",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node --watch server.js" },
+  "dependencies": { "body-parser": "^1.20.3", "express": "^4.21.2", "express-session": "^1.18.1" }
+}

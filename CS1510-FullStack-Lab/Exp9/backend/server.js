@@ -1,0 +1,18 @@
+'use strict';
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const app = express();
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/project_dashboard';
+const allowedStatuses = ['Pending', 'In Progress', 'Completed'];
+const taskSchema = new mongoose.Schema({ title: { type: String, required: true, trim: true, maxlength: 120 }, status: { type: String, enum: allowedStatuses, default: 'Pending' } }, { timestamps: true });
+const Task = mongoose.model('Task', taskSchema);
+app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'http://localhost:3000' }));
+app.use(express.json());
+app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+app.get('/tasks', async (_req, res, next) => { try { res.json(await Task.find().sort({ createdAt: -1 })); } catch (error) { next(error); } });
+app.post('/tasks', async (req, res, next) => { try { const title = String(req.body.title || '').trim(); if (!title) return res.status(400).json({ message: 'Task title is required.' }); const task = await Task.create({ title }); res.status(201).json(task); } catch (error) { next(error); } });
+app.put('/tasks/:id', async (req, res, next) => { try { const { status } = req.body; if (!allowedStatuses.includes(status)) return res.status(400).json({ message: `Status must be one of: ${allowedStatuses.join(', ')}.` }); const task = await Task.findByIdAndUpdate(req.params.id, { status }, { new: true, runValidators: true }); if (!task) return res.status(404).json({ message: 'Task not found.' }); res.json(task); } catch (error) { if (error.name === 'CastError') return res.status(400).json({ message: 'Invalid task ID.' }); next(error); } });
+app.use((error, _req, res, _next) => { console.error(error); res.status(500).json({ message: 'Server error.' }); });
+mongoose.connect(MONGO_URI).then(() => app.listen(PORT, () => console.log(`Task API running at http://localhost:${PORT}`))).catch((error) => { console.error('MongoDB connection failed:', error.message); process.exit(1); });

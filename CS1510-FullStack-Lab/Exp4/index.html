@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todoApp">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AngularJS To-do Manager</title><link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+  <script src="app/app.js"></script><script src="app/auth/authService.js"></script><script src="app/todo/todoService.js"></script>
+</head>
+<body>
+  <header class="topbar"><strong>My Tasks</strong><button type="button" ng-if="isLoggedIn()" ng-click="logout()">Logout</button></header>
+  <main ng-view></main>
+</body>
+</html>

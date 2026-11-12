@@ -1,0 +1,9 @@
+<section class="login-container">
+  <h2>Login</h2>
+  <p>Use the sample account <strong>Raghavi / pass@123</strong> to try the application.</p>
+  <form ng-submit="login()">
+    <div class="form-group"><label for="username">Username</label><input id="username" type="text" ng-model="user.username" autocomplete="username" required></div>
+    <div class="form-group"><label for="password">Password</label><input id="password" type="password" ng-model="user.password" autocomplete="current-password" required></div>
+    <button type="submit">Login</button><p class="error" role="alert" ng-if="error">{{error}}</p>
+  </form>
+</section>

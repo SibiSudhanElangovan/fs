@@ -1,0 +1,12 @@
+<section class="todo-container">
+  <h2>Welcome, {{currentUser.username}}!</h2><h3>Your To-do List</h3>
+  <form class="add-todo" ng-submit="addTodo()"><input type="text" ng-model="newTodo" placeholder="Add a new task..." aria-label="New task"><button type="submit">Add</button></form>
+  <ul class="todo-list">
+    <li ng-repeat="todo in todos track by todo.id" ng-class="{completed: todo.completed}">
+      <input type="checkbox" ng-model="todo.completed" ng-change="toggleTodo(todo)" aria-label="Mark task complete">
+      <span>{{todo.text}}</span><button class="delete" type="button" ng-click="deleteTodo(todo)">Delete</button>
+    </li>
+  </ul>
+  <p class="empty" ng-if="todos.length === 0">No tasks yet. Add your first task above.</p>
+  <p class="stats">{{completedCount()}} of {{todos.length}} tasks completed</p>
+</section>

@@ -1,0 +1,4 @@
+import React from 'react';
+export default function Cart({ items, subtotal, onUpdateQuantity, onPlaceOrder }) {
+  return <aside className="panel cart-panel"><h2>Your Cart</h2>{items.length === 0 ? <p className="muted">Your cart is empty.</p> : items.map((item) => <div className="cart-item" key={item.id}><div><strong>{item.name}</strong><p>₹{(item.price * item.quantity).toFixed(2)}</p></div><div className="quantity"><button aria-label={`Remove one ${item.name}`} onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}>−</button><span>{item.quantity}</span><button aria-label={`Add one ${item.name}`} onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}>+</button></div></div>)}<div className="subtotal"><strong>Subtotal</strong><strong>₹{subtotal.toFixed(2)}</strong></div>{items.length > 0 && <button className="place-order" onClick={onPlaceOrder}>Place Order</button>}</aside>;
+}
